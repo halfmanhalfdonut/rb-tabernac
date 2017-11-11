@@ -1,1 +1,0 @@
-post '/praise-him', &PraiseHimController.instance.handle

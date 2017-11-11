@@ -30,10 +30,10 @@ class Verse
       :chapter_id => chapter_id,
       :range => range
     ) do |row, index|
-      verses.push {
+      verses.push({
         :verse => range[index],
         :text => row[0]
-      }
+      })
     end
 
     verses

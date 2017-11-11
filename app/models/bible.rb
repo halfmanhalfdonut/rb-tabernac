@@ -5,11 +5,11 @@ class Bible
     bibles = []
 
     @db.execute "select \"id\", \"table\", \"version\", \"info_url\" from bible_versions" do |row|
-      bibles.push {
+      bibles.push({
         :table => row[1],
         :version => row[2],
         :url => row[3]
-      }
+      })
     end
 
     bibles

@@ -1,22 +1,22 @@
 require 'rubygems'
-require 'sinatra'
-require_relative 'config/database'
+require 'sinatra/base'
 
-set(:token) do |value|
-  condition do
-    puts value
+# set up all the stuff we need to load (like models/controllers, etc)
+require_relative 'bootstrap'
+
+class App < Sinatra::Base
+  get '/' do
+    IndexController.instance.randomize
   end
-end
 
-# Require all models
-require_relative 'app/models/db_connected'
-Dir[ './app/models/**/*.rb' ].reject { |f| f[ '/app/models/db_connected.rb' ] }.each do |file|
-  puts "Loading model: #{file}"
-  require file
-end
+  post '/praise-him', &PraiseHimController.instance.handle
 
-# Require any controllers and routes
-Dir[ './app/**/*.rb' ].reject { |f| f['/app/models'] }.each do |file|
-  puts "Loading file: #{file}"
-  require file
+  not_found do
+    status 404
+    "Not found"
+  end
+
+  # $0 is the executed file
+  # __FILE__ is the current file
+  run! if __FILE__ == $0
 end

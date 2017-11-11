@@ -34,10 +34,10 @@ class PraiseHimController
       verse = Verse.new
       bibles.each do |bible|
         verses = verse.get_verses( bible[:table], book_id, chapter, start_verse, end_verse )
-        verses.push {
+        verses.push({
           :url => bible[:url],
           :text => bible[:version],
-        }
+        })
 
         text[bible[:version]] = verses
       end
@@ -91,11 +91,11 @@ class PraiseHimController
 
       verse_text = get_text( bibles, book_id, chapter, start_verse, end_verse )
 
-      JSON.generate {
+      JSON.generate({
         :response_type => "in_channel",
-        :text => "Praise Him!",
+        :text => "Praise Him! †",
         :attachments => get_attachments( verse_text )
-      }
+      })
     end
   end
 end
