@@ -1,24 +1,22 @@
 require 'rubygems'
 require 'sinatra'
-require_relative 'database'
+require_relative 'config/database'
 
-token = "5WC1MzW7LDXEh1SzyHeve4P6"
-
-get '/' do
-  db = Database.new
-  db.get_random()
+set(:token) do |value|
+  condition do
+    puts value
+  end
 end
 
-post '/praise-him' do
-  request.body.rewind
-  data = JSON.parse request.body.read
+# Require all models
+require_relative 'app/models/db_connected'
+Dir[ './app/models/**/*.rb' ].reject { |f| f[ '/app/models/db_connected.rb' ] }.each do |file|
+  puts "Loading model: #{file}"
+  require file
+end
 
-  if data.token == token
-    if data.text == ""
-    end
-  end
-
-  res = {}
-
-  JSON.generate res
+# Require any controllers and routes
+Dir[ './app/**/*.rb' ].reject { |f| f['/app/models'] }.each do |file|
+  puts "Loading file: #{file}"
+  require file
 end
