@@ -30,8 +30,7 @@ class App < Sinatra::Base
   post '/praise-him', &PraiseHimController.instance.handle
 
   not_found do
-    status 404
-    "Not found"
+    IndexController.instance.randomize
   end
 
   # $0 is the executed file
