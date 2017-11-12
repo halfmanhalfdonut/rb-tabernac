@@ -16,6 +16,7 @@ class App < Sinatra::Base
 
   configure do
     use ::Rack::CommonLogger, access_logger
+    enable :logging
   end
 
   before {

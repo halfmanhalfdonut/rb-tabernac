@@ -77,7 +77,7 @@ class PraiseHimController
       data = JSON.parse request.body.read
 
       # No params sent, just let it fall through to the 404 handler which randomizes
-      pass unless data.token == ENV['TABERNAC_TOKEN'] && data.text != ""
+      pass unless data.token == ENV["TABERNAC_TOKEN"] && data.text != ""
 
       book = get_book( data.text )
       chapter, verses = get_chapter_and_verses( data.text )

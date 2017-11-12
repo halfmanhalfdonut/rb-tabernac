@@ -5,7 +5,8 @@ class Database
   include Singleton
 
   def initialize
-    @db = SQLite3::Database.new "bible-sqlite.db"
+    connection = ENV["TABERNAC_DB"]
+    @db = SQLite3::Database.new "/Users/nick/projects/www/inexact-scientist.com/tabernac/bible-sqlite.db"
   end
 
   def get_db

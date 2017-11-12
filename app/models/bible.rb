@@ -4,7 +4,7 @@ class Bible
   def get_all_bibles
     bibles = []
 
-    @db.execute "select \"id\", \"table\", \"version\", \"info_url\" from bible_versions" do |row|
+    @db.execute "select \"id\", \"table\", \"version\", \"info_url\" from \"bible_versions\"" do |row|
       bibles.push({
         :table => row[1],
         :version => row[2],
@@ -17,7 +17,7 @@ class Bible
 
   def get_random_bible
     bibles = get_all_bibles()
-    bibles[1 + rand( bibles.length )]
+    bibles[rand( bibles.length )]
   end
 
   def get_bible( bible_id )
