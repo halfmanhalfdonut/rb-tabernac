@@ -1,10 +1,12 @@
 require 'singleton'
+require 'uri'
+require 'json'
 
 class PraiseHimController
   include Singleton
 
   def get_book( text )
-    text.match(/\d?\s?[a-zA-Z]+/)
+    text.match(/\d?\s?[a-zA-Z]+/).to_s
   end
 
   def get_chapter_and_verses( text )
@@ -72,16 +74,20 @@ class PraiseHimController
   end
 
   def handle
-    get_verse = lambda do
+    lambda do
       request.body.rewind
-      data = JSON.parse request.body.read
+      data = JSON.parse( Hash[URI.decode_www_form( request.body.read )].to_json )
+
+      controller = PraiseHimController.instance
 
       # No params sent, just let it fall through to the 404 handler which randomizes
-      pass unless data.token == ENV["TABERNAC_TOKEN"] && data.text != ""
+      pass unless data["token"] == ENV["TABERNAC_TOKEN"] && data["text"] != ""
 
-      book = get_book( data.text )
-      chapter, verses = get_chapter_and_verses( data.text )
-      start_verse, end_verse = get_start_and_end_verse( verses )
+      puts data
+
+      book = controller.get_book( data["text"] )
+      chapter, verses = controller.get_chapter_and_verses( data["text"] )
+      start_verse, end_verse = controller.get_start_and_end_verse( verses )
 
       bible_db = Bible.new
       bibles = bible_db.get_all_bibles
@@ -89,12 +95,12 @@ class PraiseHimController
       book_db = Book.new
       book_id = book_db.get_book_by_name( book )
 
-      verse_text = get_text( bibles, book_id, chapter, start_verse, end_verse )
+      verse_text = controller.get_text( bibles, book_id, chapter, start_verse, end_verse )
 
       JSON.generate({
         :response_type => "in_channel",
         :text => "Praise Him! †",
-        :attachments => get_attachments( verse_text )
+        :attachments => PraiseHimController.instance.get_attachments( verse_text )
       })
     end
   end
