@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'sinatra/base'
 require 'logger'
+require 'json'
 
 # set up all the stuff we need to load (like models/controllers, etc)
 require_relative 'bootstrap'
@@ -24,12 +25,14 @@ class App < Sinatra::Base
   }
 
   get '/' do
+    content_type :json
     IndexController.instance.randomize
   end
 
   post '/praise-him', &PraiseHimController.instance.handle
 
   not_found do
+    content_type :json
     IndexController.instance.randomize
   end
 

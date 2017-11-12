@@ -97,6 +97,7 @@ class PraiseHimController
 
       verse_text = controller.get_text( bibles, book_id, chapter, start_verse, end_verse )
 
+      content_type :json
       JSON.generate({
         :response_type => "in_channel",
         :text => "Praise Him! †",
