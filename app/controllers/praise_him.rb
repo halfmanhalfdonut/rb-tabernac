@@ -55,6 +55,7 @@ class PraiseHimController
     verse_text.each do |key, value|
       attachment = {}
       attachment[:title] = key
+
       txt = ""
       value.each do |line|
         if line[:verse]
@@ -64,6 +65,7 @@ class PraiseHimController
           attachment[:title_link] = line[:url]
         end
       end
+
       attachment[:text] = txt
       attachment[:ts] = ts
 
@@ -82,8 +84,6 @@ class PraiseHimController
 
       # No params sent, just let it fall through to the 404 handler which randomizes
       pass unless data["token"] == ENV["TABERNAC_TOKEN"] && data["text"] != ""
-
-      puts data
 
       book = controller.get_book( data["text"] )
       chapter, verses = controller.get_chapter_and_verses( data["text"] )

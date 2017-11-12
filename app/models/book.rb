@@ -12,6 +12,6 @@ class Book
   end
 
   def get_book_by_name( name )
-    @db.get_first_row( "select \"id\" from books where name = :name", :name => name.capitalize )[0]
+    @db.get_first_row( "select \"book_id\" from books where name = :name", :name => name.capitalize )[0]
   end
 end
