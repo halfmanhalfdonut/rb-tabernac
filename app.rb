@@ -1,10 +1,11 @@
-require 'rubygems'
-require 'sinatra/base'
-require 'logger'
-require 'json'
+app = File.expand_path( "../app", __FILE__ )
+$LOAD_PATH.unshift( app ) unless $LOAD_PATH.include?( app )
 
-# set up all the stuff we need to load (like models/controllers, etc)
-require_relative 'bootstrap'
+require "rubygems"
+require "sinatra/base"
+require "logger"
+require "json"
+require "bootstrap"
 
 module Tabernac
   class App < Sinatra::Base
@@ -25,21 +26,21 @@ module Tabernac
       env[ "rack.errors" ] = error_logger
     }
 
-    get '/' do
+    get "/" do
       content_type :json
-      Tabernac::Controllers::IndexController.instance.randomize
+      Tabernac::Controllers::Home.instance.randomize
     end
 
-    post '/praise-him', &Tabernac::Controllers::PraiseHimController.instance.handle
+    post "/praise-him", &Tabernac::Controllers::PraiseHim.instance.handle
 
     not_found do
       content_type :json
-      Tabernac::Controllers::IndexController.instance.randomize
+      Tabernac::Controllers::Home.instance.randomize
     end
 
     error do
       content_type :json
-      Tabernac::Controllers::IndexController.instance.randomize
+      Tabernac::Controllers::Home.instance.randomize
     end
 
     # $0 is the executed file

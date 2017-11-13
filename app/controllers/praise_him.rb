@@ -4,7 +4,7 @@ require 'json'
 
 module Tabernac
   module Controllers
-    class PraiseHimController
+    class PraiseHim
       include Singleton
 
       def get_book( text )
@@ -82,7 +82,7 @@ module Tabernac
           request.body.rewind
           data = JSON.parse( Hash[URI.decode_www_form( request.body.read )].to_json )
 
-          controller = Tabernac::Controllers::PraiseHimController.instance
+          controller = PraiseHim.instance
 
           # No params sent, just let it fall through to the 404 handler which randomizes
           pass unless data["token"] == ENV["TABERNAC_TOKEN"] && data["text"] != ""
@@ -103,7 +103,7 @@ module Tabernac
           JSON.generate({
             :response_type => "in_channel",
             :text => "Praise Him! †",
-            :attachments => Tabernac::Controllers::PraiseHimController.instance.get_attachments( verse_text )
+            :attachments => PraiseHim.instance.get_attachments( verse_text )
           })
         end
       end

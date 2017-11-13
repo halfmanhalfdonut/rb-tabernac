@@ -2,7 +2,7 @@ require 'singleton'
 
 module Tabernac
   module Controllers
-    class IndexController
+    class Home
       include Singleton
 
       def randomize
