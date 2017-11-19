@@ -31,7 +31,7 @@ module Tabernac
       Tabernac::Controllers::Home.instance.randomize
     end
 
-    post "/praise-him", &Tabernac::Controllers::PraiseHim.instance.handle
+    post "/", &Tabernac::Controllers::PraiseHim.instance.handle
 
     not_found do
       content_type :json

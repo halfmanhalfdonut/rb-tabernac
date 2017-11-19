@@ -85,7 +85,7 @@ module Tabernac
           controller = PraiseHim.instance
 
           # No params sent, just let it fall through to the 404 handler which randomizes
-          pass unless data["token"] == ENV["TABERNAC_TOKEN"] && data["text"] != ""
+          pass unless data["text"] != ""
 
           book = controller.get_book( data["text"] )
           chapter, verses = controller.get_chapter_and_verses( data["text"] )
